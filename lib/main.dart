@@ -1,4 +1,5 @@
 import 'package:custom_widget/clock.dart';
+import 'package:custom_widget/thermometer.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -45,6 +46,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final items = ["Clock Widget", "Thermometer"];
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -59,27 +62,30 @@ class _MyHomePageState extends State<MyHomePage> {
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body: ListView(
-          children: <Widget>[
-            FlatButton(
-              child: Text("Clock Widget"),
+        body: ListView.builder(
+          itemBuilder: (context, index) {
+            return FlatButton(
+              child: Text(items[index]),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomePage(index: 1,),
+                    builder: (context) => HomePage(
+                          index: items[index],
+                        ),
                   ),
                 );
               },
-            )
-          ],
+            );
+          },
+          itemCount: items.length,
         ));
   }
 }
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.index}) : super(key: key);
-  final int index;
+  final String index;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -97,10 +103,15 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  ClockPage getWidget() {
+  Widget getWidget() {
     switch (widget.index) {
-      case 1:
+      case "Clock Widget":
         return ClockPage();
+      case "Thermometer":
+        return ThermometerPage(
+          width: 300,
+          degree: 50,
+        );
       default:
         return ClockPage();
     }

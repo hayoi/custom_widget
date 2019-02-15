@@ -52,7 +52,7 @@ class ClockPageState extends State<ClockPage> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: WatchPainter(datetime,
+      painter: ClockPainter(datetime,
           numberColor: Colors.black,
           handColor: Colors.black,
           borderColor: Colors.black,
@@ -62,7 +62,7 @@ class ClockPageState extends State<ClockPage> {
   }
 }
 
-class WatchPainter extends CustomPainter {
+class ClockPainter extends CustomPainter {
   final Color handColor;
   final Color numberColor;
   final Color borderColor;
@@ -73,7 +73,7 @@ class WatchPainter extends CustomPainter {
   double angle;
   double borderWidth;
 
-  WatchPainter(this.datetime,
+  ClockPainter(this.datetime,
       {this.radius = 150.0,
       this.handColor = Colors.black,
       this.numberColor = Colors.black,
