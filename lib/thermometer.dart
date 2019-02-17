@@ -24,25 +24,34 @@ class ThermometerPage extends StatefulWidget {
 
 class ThermometerPageState extends State<ThermometerPage>
     with SingleTickerProviderStateMixin {
-  AnimationController progressController;
+  double _fraction = 0.0;
+  Animation<double> animation;
 
   @override
   void initState() {
     super.initState();
-    progressController = AnimationController(
-        duration: Duration(milliseconds: 10000), vsync: this);
+    var controller = AnimationController(
+        duration: Duration(milliseconds: 2000), vsync: this);
+
+    animation = Tween(begin: 0.0, end: 1.0).animate(controller)
+      ..addListener(() {
+        setState(() {
+          _fraction = animation.value;
+        });
+      });
+
+    controller.forward();
   }
 
   @override
   void dispose() {
-    progressController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: ThermometerPainter(width: widget.width, degree: widget.degree),
+      painter: ThermometerPainter(width: widget.width, degree: widget.degree*_fraction),
       size: Size(widget.width, widget.width),
     );
   }
@@ -50,7 +59,7 @@ class ThermometerPageState extends State<ThermometerPage>
 
 class ThermometerPainter extends CustomPainter {
   final double width;
-  final double degree;
+  double degree;
   final double maxDegree;
   final double minDegree;
   double perOfMaxDegree = 0.0;
@@ -176,8 +185,8 @@ class ThermometerPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(ThermometerPainter oldDelegate) {
+    return oldDelegate.degree != degree;
   }
 }
 
